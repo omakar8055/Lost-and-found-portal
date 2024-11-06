@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost and Found Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            background: #fff;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo h2 {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        /* Adding underline effect for nav links */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #0066ff;
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #0066ff;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .login-btn {
+            background: #0066ff;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #0052cc;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 2;
+            padding: 0.5rem;
+            color: #333;
+        }
+
+        .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .find-btn {
+            background: #0066ff;
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .find-btn:hover {
+            background: #0052cc;
+            transform: scale(1.05);
+        }
+
+        .content {
+            padding: 3rem 5%;
+        }
+
+        .content h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .content p {
+            color: #666;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        iframe{      
+        display: block;   
+        height: 100vh;  
+        width: 100vw; 
+        border: none; 
+        
+    }
+
+        footer {
+            background: #f5f5f5;
+            padding: 1rem;
+            text-align: right;
+            color: #666;
+        }
+
+        /* Tablet Responsive Styles */
+        @media (max-width: 968px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .content h2 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: white;
+                flex-direction: column;
+                padding: 80px 20px 20px;
+                transition: 0.3s ease;
+                box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .find-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 2rem 5%;
+            }
+
+            .content h2 {
+                font-size: 1.8rem;
+            }
+
+            .logo h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Small Mobile Responsive Styles */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .content h2 {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                width: 85%;
+            }
+
+            .login-btn {
+                padding: 0.4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="/images/lostFoundLogo.jpg" alt="Logo">
+            <h2>Lost&Found</h2>
+        </div>
+        <div class="nav-links">
+            <a href="home" target="page-frame">Home</a>
+            <a href="lost-items" target="page-frame">Lost Items</a>
+            <a href="found-items" target="page-frame">Found Items</a>
+            <a href="post-item" target="page-frame">Post an Item</a>
+            <a href="mylists" target="page-frame">Mylist</a>
+            <a href="about" target="page-frame">About</a>
+            <a href="contact" target="page-frame">Contact Us</a>
+        </div>
+        <div class="nav-right">
+            <% if (isAuthenticated) { %>
+                <!-- Logout Button -->
+                <form action="/auth/logout" method="POST" class="logout-form">
+                    <button type="submit" class="login-btn">Logout</button>
+                </form>
+            <% } else { %>
+                <!-- Login Button -->
+                <a href="/auth/login"  class="login-btn">Login</a>
+            <% } %>
+            <button class="menu-btn">☰</button>
+        </div>     
+    </nav>
+
+  
+    <iframe name="page-frame" src="home"  frameborder="0"></iframe>
+
+    <script>
+        // Function to toggle menu visibility
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Event listener for the menu button click
+        document.querySelector('.menu-btn').addEventListener('click', toggleMenu);
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const navLinks = document.querySelector('.nav-links');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Update URL without reloading the page for navbar links
+        function handleNavigation(targetURL) {
+            document.querySelector('iframe[name="page-frame"]').src = targetURL;
+            history.pushState(null, '', '/' + targetURL);
+        }
+
+        // Attach click events to navbar links
+        const links = document.querySelectorAll('.nav-links a');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetURL = this.getAttribute('href');
+                handleNavigation(targetURL);
+            });
+        });
+
+        // Update iframe links within iframe content
+        const iframe = document.querySelector('iframe[name="page-frame"]');
+        iframe.addEventListener('load', function() {
+            try {
+                const iframeLinks = this.contentDocument.querySelectorAll('a[target="page-frame"]');
+                iframeLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const targetURL = this.getAttribute('href');
+                        handleNavigation(targetURL);
+                    });
+                });
+            } catch (e) {
+                console.error('Could not access iframe content:', e);
+            }
+        });
+
+        // Handle back and forward navigation
+        window.addEventListener('popstate', () => {
+            const currentURL = window.location.pathname.substring(1); // Get path without the leading '/'
+            document.querySelector('iframe[name="page-frame"]').src = currentURL || 'home';
+        });
+
+    </script>
+    
+</body>
+</html>

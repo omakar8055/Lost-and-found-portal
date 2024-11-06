@@ -1,0 +1,114 @@
+<!-- views/layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost and Found System</title>
+    
+</head>
+<body>
+    <div class="navbar">
+        <a href="/lost-items">Lost Items</a>
+        <a href="/found-items">Found Items</a>
+        <a href="/claimed-items">Claimed Items</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <div class="content">
+        <%- body %>
+    </div>
+</body>
+</html>
+
+<!-- views/lost-items.ejs -->
+<h2>Lost Items</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th>Lost Date</th>
+            <th>Item Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% lostItems.forEach(item => { %>
+            <tr>
+                <td><%= item.item_name %></td>
+                <td><%= item.description %></td>
+                <td><%= item.lost_date %></td>
+                <td><%= item.item_status %></td>
+                <td>
+                    <button class="delete-btn" onclick="deleteItem('<%= item.id %>')">Delete</button>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<!-- views/found-items.ejs -->
+<h2>Found Items</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th>Found Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% foundItems.forEach(item => { %>
+            <tr>
+                <td><%= item.item_name %></td>
+                <td><%= item.description %></td>
+                <td><%= item.found_date %></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<!-- views/claimed-items.ejs -->
+<h2>Claimed Items</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Lost Item ID</th>
+            <th>Found Item ID</th>
+            <th>Item Name</th>
+            <th>Claimer User ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% claimedItems.forEach(item => { %>
+            <tr>
+                <td><%= item.lost_item_id %></td>
+                <td><%= item.found_item_id %></td>
+                <td><%= item.item_name %></td>
+                <td><%= item.claimer_user_id %></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<script>
+function deleteItem(itemId) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/api/lost-items/${itemId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert('Error deleting item');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting item');
+        });
+    }
+}
+</script>

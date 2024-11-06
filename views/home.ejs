@@ -1,0 +1,87 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Lost and Found</title>
+    <style>
+         .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 1rem;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+        .find-btn {
+            background: #0066ff;
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .find-btn:hover {
+            background: #0052cc;
+            transform: scale(1.05);
+        }
+        .content { padding: 20px; }
+        .welcome-text { line-height: 1.6; }
+        .content {
+            padding: 3rem 5%;
+        }
+
+        .content h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .content p {
+            color: #666;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+        .hero h1 {
+                font-size: 2rem;
+            }
+            .find-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+        }
+        @media (max-width: 480px) {
+        .hero h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Lost and Found Information System</h1>
+        <a href="mylists" target="page-frame" class="find-btn">My Lists</a>
+    </div>
+    <main class="content">
+        <h2>Home Page</h2>
+        <p>Welcome to our Lost and Found Portal. We help connect people who have lost items with those who have found them. Our system makes it easy to report lost items and search through found items in your area. Whether you've lost something valuable or found an item that belongs to someone else, we're here to help facilitate the return process.</p>
+    </main>
+</body>
+</html>
