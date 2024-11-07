@@ -56,7 +56,7 @@ exports.getMyLists = async (req, res) => {
     }
 };
 
-exports.deleteLostItem = async (req, res) => {
+exports.ClaimLostItem = async (req, res) => {
     const lostItemId = req.params.id;
     const connection = await pool.getConnection();
 
@@ -88,7 +88,7 @@ exports.deleteLostItem = async (req, res) => {
 
 
 
-exports.deleteFoundItem = async (req, res) => {
+exports.ClaimFoundItem = async (req, res) => {
     const foundItemId = req.params.id;
     const connection = await pool.getConnection();
     try {
@@ -100,6 +100,45 @@ exports.deleteFoundItem = async (req, res) => {
         await connection.query('DELETE FROM FoundItems WHERE id =?', [foundItemId]);
 
         
+        res.redirect('/mylists');
+    } catch (error) {
+        await connection.rollback();
+        console.error('Error deleting found item:', error);
+        res.status(500).send('Error deleting found item');
+    }finally {
+        connection.release();
+    }
+};
+
+exports.DeleteLostItem = async (req, res) => {
+    const lostItemId = req.params.id;
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+        // Step 1: Clear related records in QuestionAnswers and VerificationQuestions
+        await connection.query('DELETE FROM QuestionAnswers WHERE question_id IN (SELECT id FROM VerificationQuestions WHERE lost_item_id = ?)', [lostItemId]);
+        await connection.query('DELETE FROM VerificationQuestions WHERE lost_item_id = ?', [lostItemId]);
+        // Step2: Clear lostitem  record using lostitem  id
+        await connection.query('DELETE FROM LostItems WHERE id =?', [lostItemId]);
+
+        await connection.commit();
+        res.redirect('/mylists');
+    } catch (error) {
+        await connection.rollback();
+        console.error('Error deleting lost item:', error);
+        res.status(500).send('Error deleting lost item');
+    } finally {
+        connection.release();
+    }
+};
+
+
+exports.DeleteFoundItem = async (req, res) => {
+    const foundItemId = req.params.id;
+    const connection = await pool.getConnection();
+    try {
+        await connection.query('DELETE FROM FoundItems WHERE id =?', [foundItemId]);        
         res.redirect('/mylists');
     } catch (error) {
         await connection.rollback();
