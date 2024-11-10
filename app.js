@@ -47,7 +47,7 @@ app.get('/post-item',requireAuth, (req, res) => {
 app.get('/mylists', requireAuth, myListsController.getMyLists);
 
 app.post('/claim-lost-item/:id', myListsController.ClaimLostItem);
-app.post('/delete-lost-item/:id', myListsController.DeleteLostItem);
+app.post('/delete-lost-item/:id', myListsController.DeleteLostItem);   
 
 
 app.post('/claim-found-item/:id', myListsController.ClaimFoundItem);
