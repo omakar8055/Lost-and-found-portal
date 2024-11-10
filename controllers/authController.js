@@ -24,19 +24,35 @@ exports.register = async (req, res) => {
 }
 };
 
-exports.login = async (req, res) => {
+exports.loginadmin = async (req, res) => {
     const { email, password } = req.body;
-    
-    const user = await User.findByEmail(email);
-    console.log(user,"email found")
-    if (user && await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true });
-        res.redirect('/');
-    } else {
-        res.status(401).send('Invalid email or password');
+
+    try {
+        // Find user by email
+        const user = await User.findByEmail(email);
+        console.log(user)
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.cookie('token', token, { httpOnly: true });
+            // Check if user is admin
+            if (user.is_admin === 1) {
+                // Redirect to admin-home if admin
+                res.redirect('/admin-home');
+            } else {
+                // Redirect to regular homepage if not admin
+                res.redirect('/');
+            }
+        } else {
+            // Render login page with error message if credentials are invalid
+            res.render('login', { errorMessage: 'Invalid email or password' });
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).send('Server error during login');
     }
 };
+            
+            
 
 exports.logout = (req, res) => {
     res.clearCookie('token');

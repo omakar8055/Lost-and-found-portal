@@ -7,6 +7,7 @@ const { checkAuth,requireAuth } = require('./middleware/authMiddleware');
 const itemRoutes = require('./routes/itemRoutes');
 const lostItemsController = require('./controllers/lostItemsController');
 const myListsController = require('./controllers/myListsController');
+const lost = require('./controllers/lostcontroller');
 const app = express();
 
 // Middleware setup
@@ -74,6 +75,28 @@ app.get('auth/login', (req, res) => {
 app.get('auth/register', (req, res) => {
     res.render('register');
 });
+
+app.get('/admin-home', (req, res) => {
+    res.render('admin-home');
+});
+
+
+
+app.get('/lostitems',lost.LostItems);
+app.post('/lostcontent/:id/delete', lost.delete);
+app.post('/delete-found-item/:id', lost.deleteFound);
+
+
+
+
+app.get('/hello', lost.getItemStatistics);
+
+app.get('/claimed-items', lost.getFilteredClaimedItems);
+app.post('/claimed-items/delete/:id', lost.deleteClaimedItem);
+
+
+app.get('/founditems', lost.foundItems);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

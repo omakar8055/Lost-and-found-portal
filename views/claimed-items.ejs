@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claimed Items</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Page Styles */
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            padding: 20px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 1.5em;
+        }
+
+        /* Table Container */
+        .items-list {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        thead th {
+            color: #333; /* Changed to a dark color without background */
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background-color: red; /* Red for pending status */
+        }
+
+        .status-claimed {
+            background-color: green; /* Green for claimed status */
+        }
+
+        /* Button Style */
+        button {
+            padding: 8px 12px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #d43f3f;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-grid">
+        <div class="items-list">
+            <h2>Claimed Items</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Phone</th>
+                        <th>Item Name</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Item Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% claimedItems.forEach(item => { %>
+                        <tr>
+                            <td><%= item.name %></td>
+                            <td><%= item.phone %></td>
+                            <td><%= item.item_name %></td>
+                            <td><%= new Date(item.date).toLocaleDateString() %></td>
+                            <td><span class="status-badge <%= item.status === 'pending' ? 'status-pending' : 'status-claimed' %>">
+                                <%= item.status %>
+                            </span></td>
+                            <td><%= item.item_status %></td>
+                            <td>
+                                <form action="/claimed-items/delete/<%= item.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function deleteClaimedItem(itemId) {
+            fetch(`/claimed-items/delete/${itemId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Item deleted successfully!");
+                    window.location.reload();  // Reload the page to reflect deletion
+                } else {
+                    alert("Error deleting item.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lost Items</title>
+    <title>Found Items</title>
     <style>
         /* Your existing CSS styles */
         * {
@@ -40,50 +40,53 @@
             border-bottom: 1px solid #dee2e6;
         }
         .status-badge {
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            display: inline-block;
-        }
-        .status-pending {
-            background-color: red; /* Red for pending status */
-        }
-        .status-claimed {
-            background-color: green; /* Green for claimed status */
-        }
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .status-pending {
+        background-color: red; /* Red for pending status */
+    }
+    .status-claimed {
+        background-color: green; /* Green for claimed status */
+    }
     </style>
 </head>
 <body>
     <div class="dashboard-grid">
         <div class="items-list">
-            <h2>Lost Items</h2>
+            <h2>Found Items</h2>
             <table class="items-table">
                 <thead>
                     <tr>
                         <th>Item</th>
+                        <th>Phone number</th>
                         <th>Description</th>
                         <th>Location</th>
-                        <th>Lost Date</th>
+                        <th>Found Date</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% lostItems.forEach(item => { %>
+                    <% founditems.forEach(item => { %>
                         <tr>
                             <td><%= item.item_name %></td>
+                            <td><%= item.phone %></td>
                             <td><%= item.description %></td>
                             <td><%= item.location_name %></td>
-                            <td><%= new Date(item.lost_date).toLocaleDateString() %></td>
+                            <td><%= new Date(item.found_date).toLocaleDateString() %></td>
                             <td><span 
                                 class="status-badge 
                                 <%= item.status === 'pending' ? 'status-pending' : '' %> 
                                 <%= item.status === 'claimed' ? 'status-claimed' : '' %>">
                                 <%= item.status %>
-                            </span></td> 
+                            </span></td>
+
                             <td>
-                                <form action="/lostcontent/<%= item.id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this lost item?');">
+                                <form action="/delete-found-item/<%= item.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this found item?');">
                                     <button type="submit" style="background-color: red; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">Delete</button>
                                 </form>
                             </td>
@@ -93,26 +96,23 @@
             </table>
         </div>
     </div>
-    <script>
+    <!-- <script>
         function deleteItem(itemId) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                fetch(`/api/lost-items/${itemId}`, {
-                    method: 'DELETE',
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    } else {
-                        alert('Error deleting item');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting item');
-                });
-            }
+            fetch(`/foundcontent/${itemId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Item deleted successfully!");
+                    window.location.reload(); // Reload the page to reflect deletion
+                } else {
+                    alert("Error deleting item.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
         }
-    </script>
+    </script> -->
 </body>
 </html>
